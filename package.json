@@ -1,0 +1,30 @@
+{
+  "name": "botifyaut",
+  "version": "1.0.0",
+  "description": "Fullstack web application for Botify — a platform where employees can log in to manage their profiles and an admin can oversee user data. Built with React and Express.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cloudleino/Botifyaut.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cloudleino/Botifyaut/issues"
+  },
+  "homepage": "https://github.com/cloudleino/Botifyaut#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
