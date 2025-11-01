@@ -4,6 +4,7 @@ const passport = require('passport');
 const connectDB = require('./config/db');  //  make sure this path matches your actual file location
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
 
 console.log("Loaded MONGO_URI:", process.env.MONGO_URI ? " Found" : "❌ Missing");
 
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/analytics', analyticsRoutes);
 
 
 const PORT = process.env.PORT || 5001;
