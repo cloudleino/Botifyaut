@@ -13,6 +13,18 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// ---- API-endpoints (läggs efter middleware, före app.listen) ----
+
+// Enkel hälsokoll för frontend
+app.get("/api/health", (req, res) => {
+  res.json({
+    ok: true,
+    service: "botify-api",
+    time: new Date().toISOString(),
+  });
+});
+
+
 // Testutskrift för att se att .env laddas in korrekt
 console.log("PORT:", process.env.PORT, "MONGO_URI:", process.env.MONGO_URI);
 
