@@ -1,27 +1,29 @@
-const express = require("express");
-const Robot = require("../models/Robot");
+const express = require('express');
 const router = express.Router();
+const Robot = require('../models/Robot');
 
-router.get("/", async (_req, res) => {
-  const robots = await Robot.find().sort({ createdAt: -1 });
-  res.json(robots);
+// GET alla
+router.get('/', async (req, res) => {
+  const data = await Robot.find().lean();
+  res.json(data);
 });
 
-router.post("/", async (req, res) => {
-  const { name } = req.body;
-  const robot = await Robot.create({ name, status: "Active" });
-  res.status(201).json(robot);
+// POST skapa
+router.post('/', async (req, res) => {
+  const created = await Robot.create(req.body);
+  res.status(201).json(created);
 });
 
-router.patch("/:id/status", async (req, res) => {
-  const { status } = req.body;
-  const robot = await Robot.findByIdAndUpdate(req.params.id, { status }, { new: true });
-  res.json(robot);
+// PUT – uppdatera
+router.put('/:id', async (req, res) => {
+  const updated = await Robot.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  res.json(updated);
 });
 
-router.delete("/:id", async (req, res) => {
+// DELETE – ta bort
+router.delete('/:id', async (req, res) => {
   await Robot.findByIdAndDelete(req.params.id);
-  res.status(204).end();
+  res.json({ message: 'Robot borttagen' });
 });
 
 module.exports = router;
