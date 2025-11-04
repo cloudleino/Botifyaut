@@ -2,39 +2,32 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const passport = require('passport');
-const connectDB = require('./config/db');
+const http = require('http');
 
-// ✅ Route imports
+// ✅ Local imports
+const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
-const orderRoutes = require('./routes/orderRoutes'); // ⬅️ Person B’s new route
+const orderRoutes = require('./routes/orderRoutes'); // ⬅️ Person B’s route
+const { initSocket } = require('./socket'); // ⬅️ Make sure file is named socketService.js
 
-const http = require('http');
-const app = require('./app');
-const { initSocket } = require('./socket');
-
-
-console.log("Loaded MONGO_URI:", process.env.MONGO_URI ? " Found" : "❌ Missing");
-
-
-// ⚠️ Move dotenv.config() ABOVE where you use process.env
+// ✅ Load .env BEFORE using process.env
 dotenv.config();
 console.log("Loaded MONGO_URI:", process.env.MONGO_URI ? "✅ Found" : "❌ Missing");
 
-// ✅ Connect MongoDB
+// ✅ Connect to MongoDB
 connectDB();
 
+// ✅ Express setup
 const app = express();
 app.use(express.json());
 app.use(passport.initialize());
 
+// ✅ Create HTTP server & attach socket.io
 const server = http.createServer(app);
-initSocket(server);
+const io = initSocket(server); // initSocket returns io instance
 
-server.listen(process.env.PORT || 5000, () => console.log('Server running'));
-
-
-// ✅ Attach io to every request (so routes can emit real-time events)
+// ✅ Middleware to attach io to req (optional but useful)
 app.use((req, res, next) => {
   req.io = io;
   next();
@@ -47,18 +40,17 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/orders', orderRoutes); // ⬅️ NEW: Person B Kitchen Orders
+app.use('/api/orders', orderRoutes); // Person B Kitchen Orders
 
-// ✅ SOCKET.IO events (Person B’s realtime)
+// ✅ SOCKET.IO connection logs (optional)
 io.on('connection', (socket) => {
-  console.log('🧑‍🍳 Kitchen client connected');
-  socket.on('disconnect', () => console.log('❌ Kitchen client disconnected'));
+  console.log('🧑‍🍳 Kitchen client connected:', socket.id);
+
+  socket.on('disconnect', () => {
+    console.log('❌ Kitchen client disconnected:', socket.id);
+  });
 });
 
 // ✅ Start server
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-
-
-});
+server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

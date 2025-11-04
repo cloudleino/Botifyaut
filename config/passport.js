@@ -25,7 +25,7 @@ passport.use(
         const adminEmails = ['elijah71176@gmail.com'];
         const managerEmails = ['manager44@gmail.com'];
         const cookerEmails = ['sahabithun92@gmail.com'];
-        const robotEmails = ['tony66@gmail.com'];
+        const robotEmails = ['suhana.rms@gmail.com'];
 
         let role = 'user';
         if (adminEmails.includes(email)) role = 'admin';
