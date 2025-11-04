@@ -9,9 +9,13 @@ const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
 const orderRoutes = require('./routes/orderRoutes'); // ⬅️ Person B’s new route
 
-// ✅ Realtime imports (Person B)
 const http = require('http');
-const { Server } = require('socket.io');
+const app = require('./app');
+const { initSocket } = require('./socket');
+
+
+console.log("Loaded MONGO_URI:", process.env.MONGO_URI ? " Found" : "❌ Missing");
+
 
 // ⚠️ Move dotenv.config() ABOVE where you use process.env
 dotenv.config();
@@ -24,13 +28,11 @@ const app = express();
 app.use(express.json());
 app.use(passport.initialize());
 
-// ✅ Create HTTP server & attach to Socket.IO
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "*", // Allow all origins (React frontend will connect here later)
-  },
-});
+initSocket(server);
+
+server.listen(process.env.PORT || 5000, () => console.log('Server running'));
+
 
 // ✅ Attach io to every request (so routes can emit real-time events)
 app.use((req, res, next) => {
@@ -55,6 +57,8 @@ io.on('connection', (socket) => {
 
 // ✅ Start server
 const PORT = process.env.PORT || 5001;
-server.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+
+
 });
