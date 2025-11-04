@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
 
+//GET: lista alla orders
 router.get('/', async (req,res) => {
   const data = await Order.find().lean();
   res.json(data);
 });
 
+//POST: skapa order
 router.post('/', async (req,res) => {
   const created = await Order.create(req.body);
   res.status(201).json(created);

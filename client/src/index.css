@@ -120,3 +120,94 @@
     margin-left: 0;
   }
 }
+/* ================================
+   BOTIFY KNAPPFÄRGER – BOOTSTRAP OVERRIDES
+=================================== */
+
+:root {
+  --botify-dark: #0B2447;
+  --botify-accent: #00BFFF;
+  --botify-light: #38BDF8;
+  --botify-mid: #2563EB;
+  --botify-deep: #1E3A8A;
+}
+
+/* Primär (Bootstrap .btn-primary) */
+.btn-primary {
+  background-color: var(--botify-accent) !important;
+  border-color: var(--botify-accent) !important;
+  color: #fff !important;
+}
+.btn-primary:hover {
+  background-color: var(--botify-light) !important;
+  border-color: var(--botify-light) !important;
+}
+
+/* Success (t.ex. “Lägg till robot”) */
+.btn-success {
+  background-color: var(--botify-mid) !important;
+  border-color: var(--botify-mid) !important;
+  color: #fff !important;
+}
+.btn-success:hover {
+  background-color: var(--botify-accent) !important;
+}
+
+/* Warning (t.ex. “Pausa”) */
+.btn-warning {
+  background-color: var(--botify-light) !important;
+  border-color: var(--botify-light) !important;
+  color: var(--botify-dark) !important;
+}
+.btn-warning:hover {
+  background-color: var(--botify-accent) !important;
+  color: #fff !important;
+}
+
+/* Danger (t.ex. “Ta bort”) */
+.btn-danger {
+  background-color: var(--botify-deep) !important;
+  border-color: var(--botify-deep) !important;
+  color: #fff !important;
+}
+.btn-danger:hover {
+  background-color: var(--botify-mid) !important;
+  border-color: var(--botify-mid) !important;
+}
+
+/* Gör knapparna rundare och lite elegantare */
+.btn {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease-in-out;
+}
+.btn:hover {
+  transform: translateY(-1px);
+}
+/* ======= Botify Glow Effects ======= */
+.btn {
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
+}
+
+.btn:hover {
+  box-shadow: 0 0 16px rgba(0, 191, 255, 0.7);
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+/* Specifika färger */
+.btn-primary {
+  background: linear-gradient(135deg, #007bff, #00bfff);
+}
+.btn-warning {
+  background: linear-gradient(135deg, #0088cc, #0066aa);
+}
+.btn-danger {
+  background: linear-gradient(135deg, #004c80, #002d5f);
+}

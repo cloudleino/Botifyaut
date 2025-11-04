@@ -15,7 +15,7 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<Navigate to="/analytics" replace />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user" element={<User />} />
         <Route path="/orders" element={<Orders />} />
