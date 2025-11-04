@@ -24,7 +24,7 @@ passport.use(
         // Role mapping by email
         const adminEmails = ['elijah71176@gmail.com'];
         const managerEmails = ['manager44@gmail.com'];
-        const cookerEmails = ['mayor4ben@gmail.com'];
+        const cookerEmails = ['sahabithun92@gmail.com'];
         const robotEmails = ['tony66@gmail.com'];
 
         let role = 'user';
