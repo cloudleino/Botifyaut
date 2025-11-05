@@ -1,41 +1,60 @@
+// ✅ Core imports
 const express = require('express');
 const dotenv = require('dotenv');
 const passport = require('passport');
-const connectDB = require('./config/db');  //  make sure this path matches your actual file location
+const http = require('http');
+const connectDB = require('./config/db');
+
+// ✅ Route imports
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
-const analyticsRoutes = require('./routes/analyticsRoutes');
+const orderRoutes = require('./routes/orderRoutes'); // ⬅️ Person B’s new route
 
-console.log("Loaded MONGO_URI:", process.env.MONGO_URI ? " Found" : "❌ Missing");
+// ✅ Socket setup
+const { initSocket } = require('./socket'); // make sure file name matches (socket.js)
 
-
+// ⚙️ Load .env BEFORE using process.env
 dotenv.config();
+console.log("Loaded MONGO_URI:", process.env.MONGO_URI ? "✅ Found" : "❌ Missing");
 
-// Connect to MongoDB
+// ✅ Connect MongoDB
 connectDB();
 
+// ✅ Express setup
 const app = express();
-app.use(express.json()); // for JSON requests
+app.use(express.json());
 app.use(passport.initialize());
 
+// ✅ Create HTTP server and attach Socket.IO
+const server = http.createServer(app);
+const io = initSocket(server); // ✅ store io instance
 
+// ✅ Middleware to attach io to req (optional)
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
+
+// ✅ Routes
 app.get('/', (req, res) => {
   res.send('Botify API running!!!');
 });
 
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/analytics', analyticsRoutes);
+app.use('/api/orders', orderRoutes); // ⬅️ Person B Kitchen Orders
 
+// ✅ SOCKET.IO events (Person B’s realtime)
+io.on('connection', (socket) => {
+  console.log('🧑‍🍳 Kitchen client connected:', socket.id);
 
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-
-
-
-
+  socket.on('disconnect', () => {
+    console.log('❌ Kitchen client disconnected:', socket.id);
+  });
 });
 
-
-
+// ✅ Start server (only once!)
+const PORT = process.env.PORT || 5001;
+server.listen(PORT, () => {
+  console.log(🚀 Server running on port ${PORT});
+});
