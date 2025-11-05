@@ -1,0 +1,122 @@
+:root {
+  --sidebar-w: 250px;
+  --sidebar-bg: #0B2447;
+  --content-bg: #F8FAFC;
+}
+
+/* ======= LAYOUT BAS ======= */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.sidebar {
+  width: var(--sidebar-w);
+  background-color: var(--sidebar-bg);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem 1rem;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  box-shadow: 0 0 16px #00BFFF;
+  transition: transform 0.3s ease;
+}
+.sidebar-logo:hover {
+  transform: scale(1.05);
+}
+
+.sidebar-title {
+  letter-spacing: 1px;
+  color: #EAF2FB;
+  text-shadow: 0 0 6px rgba(0, 191, 255, 0.6);
+  font-weight: 700;
+  margin-top: 0.6rem;
+}
+
+.sidebar-footer {
+  text-align: center;
+  opacity: 0.6;
+  font-size: 0.65rem;
+  color: #b6c5da;
+}
+.sidebar-footer a {
+  color: #78a9ff;
+  font-size: 0.7rem;
+  display: block;
+  margin-top: 3px;
+  text-shadow: 0 0 3px rgba(120, 169, 255, 0.4);
+}
+.sidebar-footer a:hover {
+  color: #a8c6ff;
+}
+
+/* ======= INNEHÅLL ======= */
+.content {
+  flex: 1 1 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  background: var(--content-bg);
+  transition: background-color 0.4s ease;
+}
+
+/* ======= LOGIN-SIDA ======= */
+.content-auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #0a2742 0%, #0d2236 100%);
+  color: white;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.auth-wrap {
+  width: 100%;
+  max-width: 1200px;
+  padding: 24px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(0,160,255,0.35), rgba(0,120,220,0.35));
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* ======= RESPONSIVITET ======= */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 200px;
+  }
+  .content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-shell {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .content {
+    margin-left: 0;
+  }
+}
