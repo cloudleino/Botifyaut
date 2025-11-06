@@ -1,0 +1,98 @@
+/* ==========================
+   🌌 BOTIFY AUTH STYLES
+   Used for Login & Register pages
+   ========================== */
+
+/* 🔵 Page background */
+.login-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0B2447 0%, #19376D 100%);
+  padding: 20px;
+}
+
+/* 🧊 Card container */
+.login-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1.5rem;
+  color: white;
+  width: 100%;
+  max-width: 420px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.8s ease;
+}
+
+/* ✏️ Input fields */
+.login-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #23395D;
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+.login-input::placeholder {
+  color: #ccc;
+}
+
+.login-input:focus {
+  border-color: #576CBC;
+  box-shadow: 0 0 6px rgba(87, 108, 188, 0.6);
+  outline: none;
+}
+
+/* 💙 Primary button */
+.btn-primary {
+  background-color: #576CBC !important;
+  border-color: #576CBC !important;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #475BB5 !important;
+  box-shadow: 0 0 12px rgba(87, 108, 188, 0.7);
+}
+
+/* ⚪ Outline button (Google) */
+.btn-outline-light {
+  color: #EAF2FB !important;
+  border-color: #EAF2FB !important;
+}
+
+.btn-outline-light:hover {
+  background-color: #EAF2FB !important;
+  color: #0B2447 !important;
+}
+
+/* 🌟 Links */
+.text-info {
+  color: #00BFFF !important;
+}
+
+.text-info:hover {
+  color: #7FC8FF !important;
+  text-decoration: underline;
+}
+
+/* ✨ Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🔹 Responsive */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 1.5rem;
+  }
+}
