@@ -1,0 +1,42 @@
+/* 🎨 Brand colors and global theme */
+:root {
+  --brand-900: #0B2447;
+  --brand-700: #19376D;
+  --brand-500: #576CBC;
+  --surface: #F8FAFC;
+  --text-dark: #0F172A;
+  --text-light: #FFFFFF;
+  --border: #23395D;
+}
+
+
+
+/* Global body style */
+body {
+   background: #0B2D3A; /* modern blue */
+  color: #FFFFFF;
+  min-height: 100vh;
+}
+
+/* Active link highlight in sidebar */
+.nav-link.active {
+  background-color: var(--brand-500) !important;
+}
+
+/* Page content container */
+.page-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* 🔵 Glowing logo animation */
+@keyframes pulseGlow {
+  from {
+    filter: drop-shadow(0 0 6px rgba(87,108,188,0.8));
+  }
+  to {
+    filter: drop-shadow(0 0 14px rgba(87,108,188,1));
+  }
+}
