@@ -57,4 +57,11 @@ router.get("/login-failed", (req, res) => {
   res.status(401).json({ success: false, message: "Google login failed" });
 });
 
+// ------------------- LOGOUT -------------------
+router.post("/logout", (req, res) => {
+  // If you ever store tokens in cookies, this will clear them
+  res.clearCookie("token");
+  return res.status(200).json({ message: "Logged out successfully" });
+});
+
 module.exports = router;
