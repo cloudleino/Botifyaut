@@ -2,21 +2,19 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const User = require('../models/userModels');
+const { Strategy: GoogleStrategy } = require('passport-google-oauth20');
 
-// Log to confirm .env variables are loading
-console.log('GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID);
-console.log('GOOGLE_CALLBACK_URL:', process.env.GOOGLE_CALLBACK_URL);
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = process.env;
 
-passport.use(
-  new GoogleStrategy(
+if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_CALLBACK_URL) {
+  passport.use(new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      clientID: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      callbackURL: GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
+<<<<<<< Updated upstream
       try {
         const email = profile.emails[0].value;
         let user = await User.findOne({ email });
@@ -58,18 +56,14 @@ passport.use(
         console.error('❌ Google OAuth Error:', error);
         return done(error, null);
       }
+=======
+      // TODO: hitta/skapa user
+      return done(null, { googleId: profile.id, email: profile.emails?.[0]?.value });
+>>>>>>> Stashed changes
     }
-  )
-);
-
-passport.serializeUser((user, done) => done(null, user.id));
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (err) {
-    done(err, null);
-  }
-});
+  ));
+} else {
+  console.warn('⚠️ Skipping Google OAuth: missing env vars');
+}
 
 module.exports = passport;
