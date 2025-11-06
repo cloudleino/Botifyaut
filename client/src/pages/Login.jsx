@@ -1,13 +1,31 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    // TODO: koppla till API
-    console.log({ email, pwd });
+    try {
+      const response = await axios.post('http://localhost:5001/api/auth/login', {
+        email,
+        password: pwd
+      });
+      
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        // Dispatch auth-change event
+        window.dispatchEvent(new Event('auth-change'));
+        navigate('/analytics');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
+    }
   };
 
   return (
@@ -27,6 +45,13 @@ export default function Login() {
 
         {/* Title */}
         <h2 className="fw-bold text-white mb-4 display-6">Welcome</h2>
+
+        {/* Error Message */}
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
 
         {/* Form */}
         <form onSubmit={onSubmit} className="d-grid gap-3">
@@ -60,9 +85,8 @@ export default function Login() {
             Log In
           </button>
 
-          <div className="text-center mt-2">
-            <span className="text-light-60 me-1">Don’t have an account?</span>
-            <a href="/signup" className="link-signup">Sign up</a>
+          <div className="mt-3 text-center text-white">
+            Don't have an account? <Link to="/register" className="text-info">Sign up here</Link>
           </div>
         </form>
       </div>

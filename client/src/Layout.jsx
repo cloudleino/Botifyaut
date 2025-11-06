@@ -1,12 +1,14 @@
-import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useLocation, Link, useNavigate} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./index.css"; // importera css-styling
+import "./index.css";
 
 export default function Layout({ children }) {
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const baseLink =
     "nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition position-relative";
@@ -22,9 +24,48 @@ export default function Layout({ children }) {
     transition: "all 0.3s ease",
   };
 
+  useEffect(() => {
+    // Check initial auth state
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+
+    // Listen for auth changes
+    const handleAuthChange = () => {
+      const token = localStorage.getItem('token');
+      setIsLoggedIn(!!token);
+    };
+
+    window.addEventListener('auth-change', handleAuthChange);
+
+    // Cleanup listener
+    return () => window.removeEventListener('auth-change', handleAuthChange);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsLoggedIn(false);
+    navigate('/login');
+  };
+
+  // Define navigation items
+  const navItems = [
+    { to: "/analytics", icon: "bi-bar-chart-fill", label: "Analytics" },
+    { to: "/orders", icon: "bi-box-seam", label: "Orders" },
+    { to: "/kitchen", icon: "bi-egg-fried", label: "Kitchen" },
+    { to: "/robots", icon: "bi-robot", label: "Robots" },
+    { to: "/admin", icon: "bi-person-gear", label: "Admin" },
+    { to: "/manager", icon: "bi-briefcase-fill", label: "Manager" },
+    { to: "/user", icon: "bi-person-circle", label: "User" },
+  ];
+
+  // Only show login if not logged in
+  if (!isLoggedIn) {
+    navItems.push({ to: "/login", icon: "bi-lock-fill", label: "Login" });
+  }
+
   return (
     <div className="app-shell">
-      {/* SIDOMENY */}
       <aside className="sidebar">
         <div className="text-center mb-4">
           <img
@@ -35,19 +76,9 @@ export default function Layout({ children }) {
           <h3 className="sidebar-title">BOTIFY</h3>
         </div>
 
-        {/* NAVIGATION */}
         <nav className="flex-grow-1">
           <ul className="nav flex-column gap-2">
-            {[
-              { to: "/analytics", icon: "bi-bar-chart-fill", label: "Analytics" },
-              { to: "/orders", icon: "bi-box-seam", label: "Orders" },
-              { to: "/kitchen", icon: "bi-egg-fried", label: "Kitchen" },
-              { to: "/robots", icon: "bi-robot", label: "Robots" },
-              { to: "/admin", icon: "bi-person-gear", label: "Admin" },
-              { to: "/manager", icon: "bi-briefcase-fill", label: "Manager" },
-              { to: "/user", icon: "bi-person-circle", label: "User" },
-              { to: "/login", icon: "bi-lock-fill", label: "Login" },
-            ].map(({ to, icon, label }) => (
+            {navItems.map(({ to, icon, label }) => (
               <li className="nav-item" key={to}>
                 <NavLink
                   to={to}
@@ -63,10 +94,29 @@ export default function Layout({ children }) {
                 </NavLink>
               </li>
             ))}
+            {/* Add logout button when logged in */}
+            {isLoggedIn && (
+              <li className="nav-item">
+                <button
+                  onClick={handleLogout}
+                  className={baseLink}
+                  style={{
+                    ...inactiveStyle,
+                    border: 'none',
+                    background: 'none',
+                    width: '100%',
+                    textAlign: 'left',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <i className="bi-box-arrow-right" />
+                  <span>Logout</span>
+                </button>
+              </li>
+            )}
           </ul>
         </nav>
 
-        {/* COPYRIGHT */}
         <footer className="sidebar-footer">
           <div>© 2025 Botify Team</div>
           <a
@@ -78,10 +128,7 @@ export default function Layout({ children }) {
         </footer>
       </aside>
 
-      {/* INNEHÅLLSYTA */}
-      <main
-        className={`content ${isLoginPage ? "content-auth" : ""}`}
-      >
+      <main className={`content ${isLoginPage ? "content-auth" : ""}`}>
         {children}
       </main>
     </div>

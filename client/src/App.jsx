@@ -10,6 +10,7 @@ import Robots from "./pages/Robots";
 import Analytics from "./pages/Analytics";
 import Admin from "./pages/Admin";
 import Manager from "./pages/Manager";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/analytics" replace />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/user" element={<User />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/kitchen" element={<Kitchen />} />
