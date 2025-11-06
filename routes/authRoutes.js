@@ -1,71 +1,60 @@
 // 📁 routes/authRoutes.js
-// ---------------------------------------------------------
-// ✅ Unified Auth Routes for all team members (A–E)
-// Supports: Manual Register/Login + Google OAuth2 + JWT
-// ---------------------------------------------------------
-
-const express = require('express');
-const passport = require('passport');
-const { register, login } = require('../controllers/authController');
-const { createToken } = require('../utils/jwtUtils'); // 🆕 JWT helper
+const express = require("express");
+const passport = require("passport");
+const { register, login } = require("../controllers/authController");
+const { createToken } = require("../utils/jwtUtils");
 const router = express.Router();
 
-require('../config/passport'); // Ensure GoogleStrategy is loaded
+require("../config/passport"); // make sure this loads the GoogleStrategy
 
 // ---------------------------------------------------------
-// 🧩 MANUAL REGISTER & LOGIN (Person A base)
+// 🧩 Manual Login & Register
 // ---------------------------------------------------------
-router.post('/register', register);
-router.post('/login', login);
+router.post("/register", register);
+router.post("/login", login);
 
 // ---------------------------------------------------------
-// 🧩 GOOGLE OAUTH2 LOGIN (Shared by everyone)
+// 🧩 Google OAuth Login
 // ---------------------------------------------------------
 router.get(
-  '/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }) // ✅ Fixed missing 'scope'
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
 // ---------------------------------------------------------
-// 🧩 GOOGLE CALLBACK (Handles redirect + JWT creation)
+// 🧩 Google OAuth Callback — THIS IS THE FIXED VERSION
 // ---------------------------------------------------------
 router.get(
-  '/google/callback',
-  passport.authenticate('google', { session: false, failureRedirect: '/login-failed' }),
+  "/google/callback",
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect: "http://localhost:5173/login?error=google-failed",
+  }),
   (req, res) => {
     try {
-      // ✅ Generate JWT for logged-in Google user
+      // ✅ Generate JWT token for user
       const token = createToken(req.user);
 
-      // ✅ Log success to terminal (for team testing)
       console.log(`✅ Google login: ${req.user.email} (${req.user.role})`);
 
-      // ✅ Return same JSON format as Person A manual login
-      res.status(200).json({
-        success: true,
-        message: 'Google login successful!',
-        data: {
-          token,
-          user: {
-            id: req.user._id,
-            fullname: req.user.fullname,
-            email: req.user.email,
-            role: req.user.role,
-          },
-        },
-      });
+      // ✅ Redirect user to frontend with token and details in query string
+      const redirectUrl = `http://localhost:5173/google-success?token=${token}&role=${req.user.role}&fullname=${encodeURIComponent(
+        req.user.fullname
+      )}&email=${encodeURIComponent(req.user.email)}`;
+
+      return res.redirect(redirectUrl);
     } catch (err) {
-      console.error('❌ Google login error:', err.message);
-      res.status(500).json({ success: false, message: 'Error generating token' });
+      console.error("❌ Google login error:", err.message);
+      return res.redirect("http://localhost:5173/login?error=server");
     }
   }
 );
 
 // ---------------------------------------------------------
-// 🧩 OPTIONAL FAILURE ROUTE
+// 🧩 Failure route (optional)
 // ---------------------------------------------------------
-router.get('/login-failed', (req, res) => {
-  res.status(401).json({ success: false, message: 'Google login failed' });
+router.get("/login-failed", (req, res) => {
+  res.status(401).json({ success: false, message: "Google login failed" });
 });
 
 module.exports = router;

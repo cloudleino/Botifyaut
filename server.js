@@ -3,6 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const passport = require('passport');
 const http = require('http');
+const cors = require('cors');  // 🆕 Allow frontend requests
 const connectDB = require('./config/db');
 
 // ✅ Route imports
@@ -22,6 +23,10 @@ connectDB();
 
 // ✅ Express setup
 const app = express();
+
+// ✅ Allow frontend (React) to access backend (Node)
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
 app.use(express.json());
 app.use(passport.initialize());
 
@@ -29,17 +34,18 @@ app.use(passport.initialize());
 const server = http.createServer(app);
 const io = initSocket(server); // ✅ store io instance
 
-// ✅ Middleware to attach io to req (optional)
+// ✅ Middleware to attach io to req (optional, for realtime)
 app.use((req, res, next) => {
   req.io = io;
   next();
 });
 
-// ✅ Routes
+// ✅ Default route (test backend)
 app.get('/', (req, res) => {
   res.send('Botify API running!!!');
 });
 
+// ✅ Routes
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes); // ⬅️ Person B Kitchen Orders
@@ -53,7 +59,7 @@ io.on('connection', (socket) => {
   });
 });
 
-// ✅ Start server (only once!)
+// ✅ Start server (important!)
 const PORT = process.env.PORT || 5001;
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
