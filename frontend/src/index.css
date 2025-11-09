@@ -43,3 +43,14 @@ body {
     filter: drop-shadow(0 0 14px rgba(87,108,188,1));
   }
 }
+
+/* 🟦 Global utility classes */
+.text-brand-700 {
+  color: var(--brand-700);
+}
+
+.card {
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
