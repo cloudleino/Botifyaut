@@ -41,6 +41,21 @@ router.get('/', protect, requireRole(['admin', 'manager', 'cooker']), async (req
   }
 });
 
+// ✅ NEW ROUTE — Cooker can get only active orders
+// ⚠️ must be ABOVE the dynamic route (/:id)
+router.get('/cooker/orders', protect, requireRole(['cooker']), async (req, res) => {
+  try {
+    const orders = await Order.find({
+      status: { $in: ['pending', 'cooking', 'ready'] },
+    }).populate('userId', 'fullname email');
+
+    res.status(200).json(orders);
+  } catch (err) {
+    console.error('Error fetching cooker orders:', err);
+    res.status(500).json({ message: 'Error fetching cooker orders', error: err.message });
+  }
+});
+
 // ✅ Get single order by ID (admin / manager / cooker)
 router.get('/:id', protect, requireRole(['admin', 'manager', 'cooker']), async (req, res) => {
   try {
