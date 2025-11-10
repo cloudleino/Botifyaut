@@ -1,62 +1,91 @@
 // client/src/pages/User.jsx
+import { Link } from "react-router-dom";
+
 export default function User() {
+  const stats = [
+    { label: "Orders", value: 12, icon: "🧾" },
+    { label: "Active Robots", value: 3, icon: "🤖" },
+    { label: "Messages", value: 4, icon: "💬" },
+  ];
+
+  const quickLinks = [
+    {
+      to: "/orders",
+      icon: "📦",
+      title: "My Orders",
+      desc: "Track, filter and view order history.",
+    },
+    {
+      to: "/robots",
+      icon: "🤖",
+      title: "Robots",
+      desc: "See robot status and availability.",
+    },
+    {
+      to: "/kitchen",
+      icon: "🍳",
+      title: "Kitchen",
+      desc: "Live queue and preparation times.",
+    },
+  ];
+
+  const activities = [
+    "Order #1245 completed · 09:42",
+    "Robot R3 battery low · 09:13",
+    "Profile updated · 08:57",
+  ];
+
   return (
-    <div className="page-wrap">
+    <div className="page-wrap fade-in">
+      {/* HEADER */}
       <header className="user-hero">
-        <div className="avatar" aria-hidden>👤</div>
+        <div className="avatar glow" aria-hidden>
+          👤
+        </div>
         <div>
           <h1>User Dashboard</h1>
-          <p>Welcome, <strong>Cai Leino</strong> — here’s a quick overview and shortcuts.</p>
+          <p>
+            Welcome, <strong>Cai Leino</strong> — here’s a quick overview and
+            shortcuts.
+          </p>
         </div>
       </header>
 
-      {/* Stats row */}
+      {/* STAT OVERVIEW */}
       <section className="stats-row">
-        <div className="stat">
-          <div className="stat-label">Orders</div>
-          <div className="stat-value">12</div>
-        </div>
-        <div className="stat">
-          <div className="stat-label">Active robots</div>
-          <div className="stat-value">3</div>
-        </div>
-        <div className="stat">
-          <div className="stat-label">Messages</div>
-          <div className="stat-value">4</div>
+        {stats.map((s, i) => (
+          <div key={i} className="stat">
+            <div className="stat-icon">{s.icon}</div>
+            <div className="stat-label">{s.label}</div>
+            <div className="stat-value">{s.value}</div>
+          </div>
+        ))}
+      </section>
+
+      {/* QUICK ACTIONS */}
+      <section>
+        <h2 className="section-title">Quick Access</h2>
+        <div className="cards-grid">
+          {quickLinks.map((c, i) => (
+            <Link key={i} to={c.to} className="card card-link">
+              <div className="card-icon">{c.icon}</div>
+              <h3>{c.title}</h3>
+              <p>{c.desc}</p>
+            </Link>
+          ))}
         </div>
       </section>
 
-      {/* Quick actions */}
-      <section className="cards-grid">
-        <a className="card card-link" href="/orders">
-          <div className="card-icon">🧾</div>
-          <h2>My Orders</h2>
-          <p>Track, filter and view order history.</p>
-        </a>
-
-        <a className="card card-link" href="/robots">
-          <div className="card-icon">🤖</div>
-          <h2>Robots</h2>
-          <p>See robot status and availability.</p>
-        </a>
-
-        <a className="card card-link" href="/kitchen">
-          <div className="card-icon">🔎</div>
-          <h2>Kitchen</h2>
-          <p>Live queue and preparation times.</p>
-        </a>
-      </section>
-
-      {/* Recent activity */}
+      {/* RECENT ACTIVITY */}
       <section className="card">
         <div className="card-head">
-          <h2>Recent activity</h2>
-          <a href="/analytics">View analytics →</a>
+          <h2>Recent Activity</h2>
+          <Link to="/analytics">View analytics →</Link>
         </div>
         <ul className="activity">
-          <li>Order #1245 completed · 09:42</li>
-          <li>Robot R3 battery low · 09:13</li>
-          <li>Profile updated · 08:57</li>
+          {activities.map((a, i) => (
+            <li key={i}>{a}</li>
+          ))}
         </ul>
       </section>
     </div>
