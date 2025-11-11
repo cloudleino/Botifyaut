@@ -313,3 +313,41 @@ a:focus-visible{
 @media (prefers-reduced-motion: reduce){
   *{ animation:none !important; transition:none !important; }
 }
+
+/* === BOTIFY LOGIN CARD STYLING === */
+.login-card {
+  background: rgba(11, 36, 71, 0.85); /* lite ljusare än bakgrunden */
+  border-radius: 16px;
+  border: 1px solid rgba(87, 199, 255, 0.15); /* tunn cyanblå kant */
+  box-shadow:
+    0 4px 20px rgba(0, 191, 255, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.04); /* subtil djupkänsla */
+  padding: 2rem 2.5rem;
+  max-width: 420px;
+  margin: 4rem auto;
+  backdrop-filter: blur(8px); /* glass-effekt */
+  transition: box-shadow 0.3s ease, transform 0.25s ease;
+}
+
+/* Hover-effekt: diskret neon-glöd */
+.login-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 8px 28px rgba(0, 191, 255, 0.15),
+    0 0 16px rgba(87, 199, 255, 0.25);
+}
+
+/* Knappar och textjustering för helhetskänsla */
+.login-card h1, .login-card h2, .login-card p {
+  color: #EAF2FB;
+}
+.login-card input {
+  background: rgba(25, 55, 109, 0.6);
+  border: 1px solid rgba(87, 199, 255, 0.15);
+  color: #EAF2FB;
+}
+.login-card input:focus {
+  border-color: #57C7FF;
+  box-shadow: 0 0 6px rgba(87, 199, 255, 0.4);
+}
+
