@@ -369,16 +369,129 @@ body {
   color: var(--text-light);
   min-height: 100vh;
   font-family: 'Inter', 'Segoe UI', sans-serif;
+
+/* BOTIFY-logo som smälter in */
+.sidebar-logo{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.4rem;
+  padding:1.25rem 0 1.1rem;
+  background:
+    radial-gradient(70px 70px at 50% 10%, rgba(87,199,255,.10), transparent 65%);
+}
+.sidebar-logo img{
+  width:80px; height:80px; border-radius:50%;
+  opacity:.88;
+  filter:
+    brightness(.95)
+    drop-shadow(0 0 12px rgba(87,199,255,.18))
+    drop-shadow(0 0 26px rgba(0,191,255,.08));
+  transition:filter .3s ease, opacity .3s ease, transform .3s ease;
+}
+.sidebar-logo:hover img{
+  opacity:1;
+  transform:scale(1.03);
+  filter:
+    brightness(1.06)
+    drop-shadow(0 0 16px rgba(87,199,255,.40))
+    drop-shadow(0 0 38px rgba(0,191,255,.24));
+}
+/* === BOTIFY SIDEBAR LOGO – smälter in i bakgrundsfärgen === */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+
+  /* 🟦 Färg och glöd som blandas in i sidomenyn */
+  background: radial-gradient(circle at 40% 40%, #0F2C4E 0%, #0B2447 70%);
+  box-shadow:
+    inset 0 0 8px rgba(87, 199, 255, 0.2),
+    0 0 12px rgba(87, 199, 255, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
 }
 
-/* Active link highlight in sidebar */
-.nav-link.active {
+.sidebar-logo:hover {
+  transform: scale(1.05);
+  box-shadow:
+    inset 0 0 10px rgba(87, 199, 255, 0.3),
+    0 0 18px rgba(87, 199, 255, 0.25);
+}
+
+/* 🔹 SVG-loggan själv */
+.sidebar-logo img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 6px rgba(87, 199, 255, 0.3));
+  transition: filter 0.3s ease;
+}
+
+.sidebar-logo img:hover {
+  filter: drop-shadow(0 0 10px rgba(87, 199, 255, 0.6));
+}
+
+/* 🔹 Texten bredvid loggan */
+.sidebar-logo .wordmark {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #EAF2FB;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px rgba(87, 199, 255, 0.3);
+}
+
+/* Sidebar navigation länkar (valfritt – justera till dina klassnamn) */
+.nav-link{
+  color:var(--text);
+  border-radius:.5rem;
+  transition: background-color .3s ease, transform .2s ease;
+}
+.nav-link:hover{
+  background-color: rgba(87,199,255,.15);
+  transform: translateX(3px);
+}
+.nav-link.active{
   background-color: var(--brand-500) !important;
   box-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+  box-shadow: 0 0 12px rgba(0,191,255,.35);
 }
 
-/* Page content container */
-.page-wrap {
+/* ===============================
+   FOOTER-BAND
+   =============================== */
+.footer-band{
+  background: linear-gradient(180deg, #0C2345, #0A1E3A);
+  color:#BBCEE8;
+}
+.footer-band a{ color: var(--brand-300); }
+.footer-band a:hover{ color:#9ADFFF; text-shadow:0 0 6px rgba(154,223,255,.5); }
+
+/* ===============================
+   LAUNCHER (Home)
+   =============================== */
+.launch-hero{
+  text-align:center;
+  margin: 2.5rem auto 1.5rem;
+}
+.launch-hero h1{
+  font-weight:900;
+  letter-spacing:.5px;
+  color:var(--text);
+  font-size: clamp(1.8rem, 2vw + 1rem, 2.6rem);
+  margin:.2rem 0;
+}
+.launch-hero p{
+  opacity:.85;
+  color:var(--text);
+  margin-top:.25rem;
+}
+
+.launch-grid{
+  display:grid;
+  grid-template-columns: repeat(5, minmax(180px, 1fr));
+  gap: 1rem;
   max-width: 1100px;
   margin: 0 auto;
   padding: 1.5rem;
@@ -392,11 +505,188 @@ body {
   to {
     filter: drop-shadow(0 0 14px rgba(87, 108, 188, 1));
   }
+  margin: 0 auto 2.5rem;
+  padding: 0 1rem;
+}
+@media (max-width: 1200px){ .launch-grid{ grid-template-columns: repeat(3, minmax(180px, 1fr)); } }
+@media (max-width: 700px){  .launch-grid{ grid-template-columns: repeat(2, minmax(160px, 1fr)); } }
+@media (max-width: 480px){  .launch-grid{ grid-template-columns: 1fr; } }
+
+.launch-card{
+  position:relative;
+  display:flex; flex-direction:column; align-items:center;
+  gap:.5rem;
+  padding:1.1rem 1rem;
+  border-radius:14px;
+  text-decoration:none; color:var(--text);
+  background: linear-gradient(160deg, var(--surface-800), var(--surface-700));
+  border:1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  outline:none;
+}
+.launch-card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(0,191,255,.18);
+  border-color: rgba(87,199,255,.28);
+}
+.launch-card:focus-visible{
+  box-shadow: 0 0 0 3px rgba(87,199,255,.35), 0 10px 30px rgba(0,191,255,.20);
 }
 
-/* 🟦 Global utility classes */
-.text-brand-700 {
-  color: var(--brand-700);
+.launch-icon{
+  width:44px; height:44px; display:grid; place-items:center;
+  border-radius:50%;
+  font-size:22px; color:#0A1C33;
+  background: linear-gradient(135deg, #BEEBFF, #7AD4FF);
+  box-shadow: 0 0 0 4px rgba(87,199,255,.1), 0 6px 16px rgba(0,0,0,.25);
+}
+.launch-title{ font-weight:700; font-size:1.05rem; text-align:center; }
+.launch-sub{ font-size:.9rem; opacity:.9; text-align:center; }
+
+/* Färg-accenter per roll (subtil glow) */
+.launch-card.admin   { box-shadow: 0 8px 28px rgba(230, 57, 70,.08); }
+.launch-card.admin:hover   { box-shadow: 0 16px 40px rgba(230,57,70,.20); }
+.launch-card.manager { box-shadow: 0 8px 28px rgba(0,191,255,.10); }
+.launch-card.manager:hover { box-shadow: 0 16px 40px rgba(0,191,255,.22); }
+.launch-card.robot   { box-shadow: 0 8px 28px rgba(139,92,246,.10); }
+.launch-card.robot:hover   { box-shadow: 0 16px 40px rgba(139,92,246,.22); }
+.launch-card.cooker  { box-shadow: 0 8px 28px rgba(234,179,8,.10); }
+.launch-card.cooker:hover  { box-shadow: 0 16px 40px rgba(234,179,8,.22); }
+.launch-card.user    { box-shadow: 0 8px 28px rgba(16,185,129,.10); }
+.launch-card.user:hover    { box-shadow: 0 16px 40px rgba(16,185,129,.22); }
+
+/* ===============================
+   USER DASHBOARD
+   =============================== */
+.fade-in{ animation:fadeIn .6s ease-in; }
+@keyframes fadeIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+.user-hero{
+  display:flex; align-items:center; gap:1.2rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid var(--border);
+}
+.avatar{
+  font-size:2.5rem; width:64px; height:64px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background: radial-gradient(circle at 40% 40%, var(--brand-300), var(--brand-700));
+  box-shadow: 0 0 15px rgba(87,199,255,.25);
+}
+.glow{ animation:pulseGlow 2.5s infinite ease-in-out; }
+@keyframes pulseGlow{
+  0%  { filter: drop-shadow(0 0 6px var(--brand-300)); }
+  50% { filter: drop-shadow(0 0 16px var(--brand-300)); }
+  100%{ filter: drop-shadow(0 0 6px var(--brand-300)); }
+}
+.user-hero h1{
+  font-size:2rem; font-weight:800; color:var(--brand-300); margin:0;
+}
+.user-hero p{ color:rgba(255,255,255,.85); margin:.25rem 0 0; }
+
+/* Stats */
+.stats-row{
+  display:flex; justify-content:space-between; flex-wrap:wrap;
+  gap:1rem; margin:2rem 0;
+}
+.stat{
+  flex:1; text-align:center;
+  background: linear-gradient(145deg, #0F2C4E, var(--brand-700));
+  border-radius:14px; padding:1rem 1.2rem;
+  border:1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0,191,255,.1);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.stat:hover{ transform:translateY(-4px); box-shadow:0 0 14px rgba(87,199,255,.4); }
+.stat-icon{ font-size:1.6rem; margin-bottom:.3rem; }
+.stat-label{ font-size:.9rem; color:rgba(255,255,255,.7); }
+.stat-value{ font-size:1.8rem; font-weight:700; color:var(--brand-300); }
+
+/* Quick Access */
+.section-title{ color:var(--brand-300); font-weight:700; margin:.25rem 0 .9rem; }
+.cards-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap:1rem; margin-bottom:2rem;
+}
+.card{
+  background: linear-gradient(160deg, #10294A, #1B3E73);
+  color:#E8F3FF; border-radius:1rem; padding:1.5rem;
+  border:1px solid rgba(87,199,255,.15);
+  box-shadow: 0 2px 10px rgba(0,191,255,.15);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.card:hover{ transform:translateY(-5px); box-shadow:0 8px 20px rgba(87,199,255,.25); }
+.card-icon{ font-size:1.8rem; margin-bottom:.4rem; }
+.card h3{ color:var(--brand-300); margin-bottom:.3rem; font-size:1.2rem; }
+
+/* Activity */
+.card-head{
+  display:flex; justify-content:space-between; align-items:center;
+  border-bottom:1px solid var(--border);
+  margin-bottom:1rem; padding-bottom:.4rem;
+}
+.activity li{ color:var(--text); margin-bottom:.4rem; font-size:.95rem; }
+
+/* Responsive */
+@media (max-width: 768px){
+  .stats-row{ display:flex; flex-direction:column; }
+  .cards-grid{ display:flex; flex-direction:column; }
+  .stat,.card{ text-align:center; }
+  .user-hero{ flex-direction:column; align-items:flex-start; }
+}
+
+/* ===============================
+   ACCESSIBILITY & POLISH
+   =============================== */
+/* Enhetlig fokusring */
+.launch-card:focus-visible,
+.card:focus-visible,
+a:focus-visible{
+  outline:none;
+  box-shadow: 0 0 0 3px rgba(87,199,255,.35), 0 10px 30px rgba(0,191,255,.18);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ animation:none !important; transition:none !important; }
+}
+
+/* === BOTIFY LOGIN CARD STYLING === */
+.login-card {
+  background: rgba(11, 36, 71, 0.85); /* lite ljusare än bakgrunden */
+  border-radius: 16px;
+  border: 1px solid rgba(87, 199, 255, 0.15); /* tunn cyanblå kant */
+  box-shadow:
+    0 4px 20px rgba(0, 191, 255, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.04); /* subtil djupkänsla */
+  padding: 2rem 2.5rem;
+  max-width: 420px;
+  margin: 4rem auto;
+  backdrop-filter: blur(8px); /* glass-effekt */
+  transition: box-shadow 0.3s ease, transform 0.25s ease;
+}
+
+/* Hover-effekt: diskret neon-glöd */
+.login-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 8px 28px rgba(0, 191, 255, 0.15),
+    0 0 16px rgba(87, 199, 255, 0.25);
+}
+
+/* Knappar och textjustering för helhetskänsla */
+.login-card h1, .login-card h2, .login-card p {
+  color: #EAF2FB;
+}
+.login-card input {
+  background: rgba(25, 55, 109, 0.6);
+  border: 1px solid rgba(87, 199, 255, 0.15);
+  color: #EAF2FB;
+}
+.login-card input:focus {
+  border-color: #57C7FF;
+  box-shadow: 0 0 6px rgba(87, 199, 255, 0.4);
 }
 
 .card {
