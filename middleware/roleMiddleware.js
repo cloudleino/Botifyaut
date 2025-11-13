@@ -1,40 +1,30 @@
 // 📁 middleware/roleMiddleware.js
 // -----------------------------------------
 // 🔐 Universal Role Authorization Middleware
-// Works for both Person A (authorizeRoles)
-// and Person B (requireRole)
+// Compatible with requireRole(), verifyRole(), authorizeRoles()
 // -----------------------------------------
 
-/**
- * Person A style:
- *   authorizeRoles('admin', 'manager')
- *
- * Person B style:
- *   requireRole(['admin', 'manager'])
- */
-
-// ✅ Original version (Person A)
 function authorizeRoles(...allowedRoles) {
   return (req, res, next) => {
-    const userRole = req.user?.role;
+    const userRole = (req.user?.role || '').toLowerCase();
+    const allowed = allowedRoles.map(r => String(r).toLowerCase());
 
-    // Make sure role exists on the user
+    // No role → unauthorized
     if (!userRole) {
       return res.status(401).json({ message: 'Unauthorized: No role found for user' });
     }
 
-    // If user's role not in allowedRoles → deny access
-    if (!allowedRoles.includes(userRole)) {
-      return res.status(403).json({ message: 'Access denied' });
+    // Role not in allowed list → forbidden
+    if (!allowed.includes(userRole)) {
+      return res.status(403).json({ message: `Access denied: ${userRole} not allowed` });
     }
 
-    // Continue if authorized
     next();
   };
 }
 
-// ✅ New alias (Person B)
+// ✅ Aliases for different import styles across your routes
 const requireRole = (rolesArray = []) => authorizeRoles(...rolesArray);
+const verifyRole  = (rolesArray = []) => authorizeRoles(...rolesArray);
 
-// ✅ Export both versions so all routes keep working
-module.exports = { authorizeRoles, requireRole };
+module.exports = { authorizeRoles, requireRole, verifyRole };
