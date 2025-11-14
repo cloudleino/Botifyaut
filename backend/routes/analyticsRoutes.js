@@ -1,19 +1,22 @@
-import express from "express";
-import Order from "../models/orderModels.js";
-import Robot from "../models/robotModels.js";
+const express = require("express");
+const Order = require("../models/orderModels");
+const Robot = require("../models/robotModels");
 
 const router = express.Router();
 
-// GET /analytics/summary - Hämta sammanfattande statistik
+// GET /analytics/summary - Fetch summary statistics
 router.get("/summary", async (req, res) => {
   try {
     const totalOrders = await Order.countDocuments();
     const completedOrders = await Order.countDocuments({ status: "completed" });
+
     const ordersByStatus = await Order.aggregate([
       { $group: { _id: "$status", count: { $sum: 1 } } }
     ]);
+
     const totalRobots = await Robot.countDocuments();
     const activeRobots = await Robot.countDocuments({ isActive: true });
+
     const avgOrdersPerRobot = totalOrders / (totalRobots || 1);
 
     res.json({
@@ -23,13 +26,13 @@ router.get("/summary", async (req, res) => {
         ordersByStatus,
         totalRobots,
         activeRobots,
-        avgOrdersPerRobot,
-      },
+        avgOrdersPerRobot
+      }
     });
   } catch (err) {
-    console.error(err);
+    console.error("Analytics error:", err);
     res.status(500).json({ message: "Error fetching analytics", error: err });
   }
 });
 
-export default router;
+module.exports = router;
