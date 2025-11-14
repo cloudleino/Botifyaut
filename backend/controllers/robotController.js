@@ -1,25 +1,43 @@
 const Robot = require('../models/robotModels');
-const { broadcastRobotUpdate } = require('../socket');
 
-exports.getRobots = async (req, res) => {
-    const robots = await Robot.find();
-    res.json({ success: true, data: robots });
+// GET all robots
+const getRobots = async (req, res) => {
+    try {
+        const robots = await Robot.find();
+        res.json({ success: true, data: robots });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
 };
 
-exports.createRobot = async (req, res) => {
-    const robot = new Robot(req.body);
-    await robot.save();
-    res.status(201).json({ success: true, data: robot });
+// POST create a robot
+const createRobot = async (req, res) => {
+    try {
+        const robot = await Robot.create(req.body);
+        res.status(201).json({ success: true, data: robot });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
 };
 
-exports.updateRobot = async (req, res) => {
-    const robot = await Robot.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!robot) return res.status(404).json({ message: 'Robot not found' });
-    broadcastRobotUpdate(robot);
-    res.json({ success: true, data: robot });
+// PUT update robot
+const updateRobot = async (req, res) => {
+    try {
+        const robot = await Robot.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json({ success: true, data: robot });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
 };
 
-exports.deleteRobot = async (req, res) => {
-    await Robot.findByIdAndDelete(req.params.id);
-    res.json({ success: true, message: 'Robot deleted' });
+// DELETE robot
+const deleteRobot = async (req, res) => {
+    try {
+        await Robot.findByIdAndDelete(req.params.id);
+        res.json({ success: true, data: null });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
 };
+
+module.exports = { getRobots, createRobot, updateRobot, deleteRobot };
