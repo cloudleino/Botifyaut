@@ -11,9 +11,11 @@ const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
 const robotRoutes = require('./routes/robotRoutes');
 const orderRoutes = require('./routes/orderRoutes'); // ⬅️ Person B’s new route
+const analyticsRoutes = require('./routes/analyticsRoutes');
 
 // ✅ Socket setup
-const { initSocket } = require('./socket'); // make sure file name matches (socket.js)
+const { initSocket } = require('./socket'); // make sure the file name matches (socket.js)
+
 
 // ⚙️ Load .env BEFORE using process.env
 dotenv.config();
@@ -51,6 +53,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/robots', robotRoutes);
 app.use('/api/orders', orderRoutes); // ⬅️ Person B Kitchen Orders
+app.use('/api/analytics', analyticsRoutes);
+
 
 // ✅ SOCKET.IO events (Person B’s realtime)
 io.on('connection', (socket) => {
