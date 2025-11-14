@@ -15,6 +15,11 @@ const orderRoutes = require('./routes/orderRoutes'); // ⬅️ Person B’s new 
 // ✅ Socket setup
 const { initSocket } = require('./socket'); // make sure file name matches (socket.js)
 
+// ⬇️⬇️⬇️ NYTT: Analytics route ⬇️⬇️⬇️
+const analyticRoutes = require('./routes/analyticRoutes'); // <— Analytics route
+// ⬆️⬆️⬆️ Slut nytt
+
+
 // ⚙️ Load .env BEFORE using process.env
 dotenv.config();
 console.log("Loaded MONGO_URI:", process.env.MONGO_URI ? "✅ Found" : "❌ Missing");
